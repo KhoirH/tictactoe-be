@@ -26,6 +26,11 @@ http.listen(3001, function() {
         status: 'pending', 
         win: false
       };
+    
+      client.join(data.roomId);
+      
+      io.sockets.in(data.roomId)
+        .emit('playerAction', room[data.roomId]);
     })
     
     
@@ -37,6 +42,12 @@ http.listen(3001, function() {
         room[data.roomId].activeUser = host;
         room[data.roomId].status = 'start';
       }
+      
+          
+      client.join(data.roomId);
+      
+      io.sockets.in(data.roomId)
+        .emit('playerAction', room[data.roomId]);
     })
 
     client.on('hitBox', (data) => {
@@ -46,17 +57,33 @@ http.listen(3001, function() {
         o: '',
       };
       const dataArrayTictactoe = Object.entries(room[data.roomId].dataTictactoe);
-      
+      const activeUserNow = room[data.roomId]?.activeUser;
+      room[data.roomId].activeUser = Object.keys(room[data.roomId]?.user).filter((da) => (da != activeUserNow))[0];
       for (let i = 0; i < dataArrayTictactoe.length; i++) {
         const dataSingleTictactoe = dataArrayTictactoe[i];
-        sym[dataSingleTictactoe[1].symbol] += dataSingleTictactoe[0];
-
-        if(winPath.includes(sym.x) || winPath.includes(sym.o)) {
-          room[data.roomId].win = dataSingleTictactoe[1].id;
-          break;
-        }
+        sym[dataSingleTictactoe[1].symbol] += `${dataSingleTictactoe[0]}`;
       }
-      
+
+      for(let j = 0; j < winPath.length; j++) {
+        let statusX = [];
+        let statusO = [];
+        for(let k = 0; Math.max(sym.x.length, sym.o.length) > k; k++) {
+          if(sym.x[k]) statusX.push(winPath[j].includes(sym.x[k]));
+          if(sym.o[k]) statusO.push(winPath[j].includes(sym.o[k]));
+        }
+        statusX = statusX.filter((da) => da);
+        statusO = statusO.filter((da) => da);
+        if(statusX.length === 3 || statusO.length === 3) {
+          room[data.roomId].winner = activeUserNow;
+          room[data.roomId].status = 'end';
+          break;
+        } 
+      }
+      io.sockets.in(data.roomId)
+        .emit('playerAction', room[data.roomId]);
     });
   })
+  
 })
+
+

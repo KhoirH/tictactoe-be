@@ -10,7 +10,7 @@
  *        `boxId` : `symbol`
  *      }
  *      status: `pending` / `start`
- *      win: `userId`
+ *      winner: `userId`
  *    }
  * }
 **/
