@@ -13,7 +13,7 @@ const io = require('socket.io')(http, {
 });
 
 
-http.listen(3001, function() {
+http.listen(process.env.PORT || 3001, function() {
   io.on('connection', client => {
     
     client.on('initGame', (data) => {
