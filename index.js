@@ -9,7 +9,9 @@ const io = require('socket.io')(http, {
       const noOriginHeader = req.headers.origin === undefined;
       callback(null, noOriginHeader);
   },
-  credentials: true,
+  cors: {
+    credentials: true
+  },
   allowEIO3: true
 });
 
