@@ -8,7 +8,7 @@ const io = require('socket.io')(http, {
   withCredentials: true,
   cors: {
     origin: '*',
-    credentials: false
+    credentials: true
   },
   allowEIO3: true
 });
