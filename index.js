@@ -5,10 +5,8 @@ const app = express();
 const http = require('http').createServer(app);
 
 const io = require('socket.io')(http, {
-  withCredentials: true,
   cors: {
-    origin: 'https://khoirh.github.io',
-    credentials: true
+    origin: '*',
   },
   allowEIO3: true
 });
