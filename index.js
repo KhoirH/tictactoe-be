@@ -7,7 +7,7 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http, {
   withCredentials: true,
   cors: {
-    origin: '*',
+    origin: 'https://khoirh.github.io',
     credentials: true
   },
   allowEIO3: true
@@ -49,7 +49,7 @@ http.listen(process.env.PORT || 3001, function() {
       
       io.sockets.in(data.roomId)
         .emit('playerAction', room[data.roomId]);
-    })
+      })
 
     client.on('hitBox', (data) => {
       room[data.roomId].dataTictactoe[data.boxId] = data.user;
