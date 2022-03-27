@@ -5,10 +5,7 @@ const app = express();
 const http = require('http').createServer(app);
 
 const io = require('socket.io')(http, {
-  allowRequest: (req, callback) => {
-      const noOriginHeader = req.headers.origin === undefined;
-      callback(null, noOriginHeader);
-  },
+  origin: "*",
   cors: {
     credentials: true
   },
