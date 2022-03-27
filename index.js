@@ -6,15 +6,17 @@ const http = require('http').createServer(app);
 
 const io = require('socket.io')(http, {
   allowRequest: (req, callback) => {
-    const noOriginHeader = req.headers.origin === undefined;
-    callback(null, noOriginHeader);
+      const noOriginHeader = req.headers.origin === undefined;
+      callback(null, noOriginHeader);
   },
+  credentials: true,
   allowEIO3: true
 });
 
 
 http.listen(process.env.PORT || 3001, function() {
   io.on('connection', client => {
+    
     client.on('initGame', (data) => {
       room[data.roomId] = {
         user : {
